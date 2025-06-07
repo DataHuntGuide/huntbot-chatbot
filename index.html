@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>HuntBot Chat</title>
+</head>
+<body>
+  <h2>HuntBot – Ask a Hunting Question</h2>
+  <input type="text" id="userInput" placeholder="Type your question..." size="50"/>
+  <button onclick="sendMessage()">Send</button>
+  <div id="chatBox" style="margin-top: 20px;"></div>
+
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById("userInput");
+      const chatBox = document.getElementById("chatBox");
+      const message = input.value;
+
+      const res = await fetch("/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message }),
+      });
+
+      const data = await res.json();
+      chatBox.innerHTML += `<p><strong>You:</strong> ${message}</p>`;
+      chatBox.innerHTML += `<p><strong>HuntBot:</strong> ${data.reply}</p>`;
+      input.value = "";
+    }
+  </script>
+</body>
+</html>
